@@ -3,7 +3,7 @@
     "name": "manager",
     "slug": "manager",
     "version": "1.0.0",
-    "homepage": "https://gitname.github.io/react-gh-pages",
+    "homepage": "https://johnatassf.github.io/manager-clients",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -24,7 +24,7 @@
     },
     "web": {
       "bundler": "metro",
-      "publicPath": "/my-app/",
+      "publicPath": "/manager-clients/",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
