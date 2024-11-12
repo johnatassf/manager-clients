@@ -12,7 +12,7 @@ const ManageClientList = () => {
   const [items] = React.useState([
     {
       key: 1,
-      name: 'Cupcake',
+      name: 'Cupcakee',
       calories: 356,
       fat: 16,
     },
@@ -90,14 +90,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    //padding: 16,
-    //backgroundColor: '#0e101c',
-    //borderRadius:0,
     borderWidth: 0
+    
   },
   card: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    borderRadius:0
   },
   table: {
     height: '100%',
