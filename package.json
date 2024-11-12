@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "npx expo export",
-    "predeploy": "npm run build --web",
-    "deploy": "gh-pages -d web-build",
+    "deploy": "gh-pages -t -d dist",
+    "predeploy": "expo export -p web",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
