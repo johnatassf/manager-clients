@@ -48,7 +48,6 @@ const ManageClientList = () => {
   };
 
   return (
-    <View style={styles.container}>
 
       <Card style={styles.card}>
         <DataTable>
@@ -79,7 +78,6 @@ const ManageClientList = () => {
           />
         </DataTable>
       </Card>
-    </View>
   );
 };
 
