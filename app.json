@@ -3,6 +3,7 @@
     "name": "manager",
     "slug": "manager",
     "version": "1.0.0",
+    "homepage": "https://gitname.github.io/react-gh-pages",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
