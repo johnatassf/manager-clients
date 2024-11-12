@@ -33,9 +33,7 @@
     ],
     "experiments": {
       "typedRoutes": true,
-      "experiments": {
       "baseUrl": "/manager-clients"
-    }
     }
   }
 }
