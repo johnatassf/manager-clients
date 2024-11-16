@@ -113,15 +113,22 @@ let theme = colorSchema === 'dark' ? customDarkTheme : customLightTheme;
         }}
       >
         {/* Drawer Navigator para as telas regulares */}
-        <StackNavigator.Screen name="drawerScreens" component={DrawerScreens} />
-
+        <StackNavigator.Screen name="drawerScreens"  component={DrawerScreens}
+         options={{
+          title:'Clientes'
+         // você não quiser cabeçalho no modal
+        }} />
+ 
         {/* Modal Manager Client */}
         <StackNavigator.Screen
           name="manager-list/registerClienteModal"
+        
           component={RegisterClienteModal}
           options={{
             presentation: 'modal', // Define como modal
-            headerShown: true, // Se você não quiser cabeçalho no modal
+            headerShown: true,
+            headerTitle:'Cadastrar Cliente'
+           // você não quiser cabeçalho no modal
           }}
         />
       </StackNavigator.Navigator>

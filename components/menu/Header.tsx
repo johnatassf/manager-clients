@@ -20,7 +20,7 @@ export default function CustomHeader({ title, navigation, buttonRegister = undef
             <StatusBar barStyle="light-content" backgroundColor="#6200ea" />
             <Appbar.Header>
                 <Appbar.Action icon="menu" onPress={() => navigation.openDrawer()} />
-                <Appbar.Content title={title} />
+                <Appbar.Content title={title} mode='large' />
                 {buttonRegister && (
                     <Appbar.Action icon="plus" onPress={() => navigation.navigate(buttonRegister)} />
                 )}

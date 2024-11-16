@@ -14,7 +14,7 @@ export default function DrawerScreens() {
                     drawerLabel: 'ManagerClient',
                     title: 'Overview',
                     header: ({ navigation }) => (
-                        <CustomHeader title="Manager Client" navigation={navigation} buttonRegister="manager-list/registerClienteModal" />
+                        <CustomHeader title="Clientes" navigation={navigation} buttonRegister="manager-list/registerClienteModal" />
                         
                     ),
                 }}

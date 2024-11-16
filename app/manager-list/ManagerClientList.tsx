@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { Appbar, Card, DataTable } from 'react-native-paper';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from "react-native";
+import { ActivityIndicator, Appbar, Card, DataTable } from 'react-native-paper';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { useEffect } from 'react';
+import { Colors } from '@/constants/Colors';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 
 type Client = {
@@ -21,15 +24,15 @@ type Client = {
   note: string;
 };
 
-const ManageClientList = () => {
+const ManageClientList = ({ navigation }) => {
   const [page, setPage] = React.useState<number>(0);
   const [numberOfItemsPerPageList] = React.useState([2, 3, 4]);
   const [itemsPerPage, onItemsPerPageChange] = React.useState(
     numberOfItemsPerPageList[0]
   );
   const [loading, setLoading] = React.useState(false); // Es
-
   const [clients, setclients] = React.useState<Client[]>([]);
+
 
   const from = 0; // Define the starting index
   const to = clients.length; // Define the ending index
@@ -46,10 +49,10 @@ const ManageClientList = () => {
   async function getClients() {
     try {
       setLoading(true);
-      
+
       const response = await fetch('http://localhost:8080/client');
       const json = await response.json();
-      
+
       setclients(json);
       return json; // Ensure this returns the fetched clients
     } catch (error) {
@@ -65,12 +68,20 @@ const ManageClientList = () => {
   }, [])
 
 
+  useFocusEffect(
+    React.useCallback(() => {
+        getClients();
+    }, [])
+);
+
 
   return (
 
-    <Card style={styles.card}>
+    <Card style={styles.card} >
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" /> // Indicador de carregamento
+        <View className='justify-center'>
+          <ActivityIndicator animating={true} size='large' />
+        </View>
       ) : (
         <DataTable>
           <DataTable.Header>
@@ -80,7 +91,10 @@ const ManageClientList = () => {
           </DataTable.Header>
 
           {clients.slice(from, to).map((client) => (
-            <DataTable.Row key={client.id} >
+            <DataTable.Row onPress={() =>
+              navigation.push('manager-list/registerClienteModal', {
+                id: client.id,
+              })} key={client.id} >
               <DataTable.Cell >{client.name}</DataTable.Cell>
               <DataTable.Cell numeric>{client.nickname}</DataTable.Cell>
               <DataTable.Cell numeric>{client.cpf}</DataTable.Cell>
@@ -99,8 +113,9 @@ const ManageClientList = () => {
           selectPageDropdownLabel={'Rows per page'}
         /> */}
         </DataTable>
-      )}
-    </Card>
+      )
+      }
+    </Card >
   );
 };
 
@@ -117,7 +132,7 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     height: '100%',
-    borderRadius: 0
+    borderRadius: 0,
   },
   table: {
     height: '100%',
@@ -126,7 +141,12 @@ const styles = StyleSheet.create({
   tableRow: {
     // height:'100%',
     borderLeftWidth: 0
-  }
+  },
+  centeredContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
 
 })
