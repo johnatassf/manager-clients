@@ -5,34 +5,58 @@ import {
     useNavigation,
 } from '@react-navigation/native';
 import { Button, Card } from 'react-native-paper';
+import { useEffect } from 'react';
 
 
 
 
 type FormValues = {
-    nome: string;
-    apelido: string;
+    name: string;
+    nickname: string;
     cpf: string;
-    telefone: string;
+    phone: string;
     email: string;
-    rua: string;
-    numero: string;
-    bairro: string;
-    dataNascimento: string;
-    idade: string;
-    profissao: string;
-    servicosAnteriores: string;
-    observacoes: string;
+    street: string;
+    number: string;
+    neighborhood: string;
+    dateOfBirth: string;
+    age: string;
+    profession: string;
+    previousServices: string;
+    note: string;
 };
 
 
 export default function RegisterClienteModal() {
-    const { control, handleSubmit, formState: { errors } } = useForm<FormValues>();
+    const { control, handleSubmit, formState: { errors }, setValue} = useForm<FormValues>();
     const navigation = useNavigation();
 
     const onSubmit = (data: FormValues) => {
-        Alert.alert("Dados Enviados", JSON.stringify(data));
+        newClient(data);
     };
+
+    useEffect(() => {
+        const mock = generateMockClientData();
+        (Object.keys(mock) as Array<keyof FormValues>).forEach(key => {
+
+            setValue(key as keyof FormValues, mock[key]);
+        })
+     
+        }, [setValue]);
+
+    async function newClient(client: any) {
+        const url = 'http://localhost:8080/client'
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(client)
+        })
+
+        const newClient = await response.json();
+
+    }
 
 
 
@@ -44,7 +68,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="nome"
+                    name="name"
                     rules={{ required: "Nome é obrigatório." }}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
@@ -56,11 +80,11 @@ export default function RegisterClienteModal() {
                         />
                     )}
                 />
-                {errors.nome && <Text style={styles.error}>{errors.nome.message}</Text>}
+                {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
                 <Controller
                     control={control}
-                    name="apelido"
+                    name="nickname"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -91,7 +115,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="telefone"
+                    name="phone"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -123,7 +147,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="rua"
+                    name="street"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -137,7 +161,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="numero"
+                    name="number"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -152,7 +176,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="bairro"
+                    name="neighborhood"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -166,7 +190,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="dataNascimento"
+                    name="dateOfBirth"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -180,7 +204,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="idade"
+                    name="age"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -195,7 +219,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="profissao"
+                    name="profession"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -209,7 +233,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="servicosAnteriores"
+                    name="previousServices"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -223,7 +247,7 @@ export default function RegisterClienteModal() {
 
                 <Controller
                     control={control}
-                    name="observacoes"
+                    name="note"
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
@@ -253,9 +277,10 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
         height: '100%',
-        borderRadius:0,
-        padding: 10
-      },
+        borderRadius: 0,
+        padding: 10,
+        overflowY: 'auto'
+    },
     title: {
         fontSize: 24,
         color: 'black',
@@ -277,3 +302,31 @@ const styles = StyleSheet.create({
 
 
 });
+
+
+
+import { faker } from '@faker-js/faker';
+
+const generateMockClientData = (): FormValues => {
+    const mockData = {
+            id: 0,
+            name: faker.person.fullName(), // Nome completo
+            nickname: faker.person.zodiacSign(), // Apelido
+            cpf: faker.number.int(11).toString(), // CPF fictício
+            phone: faker.phone.number(), // Telefone
+            email: faker.internet.email(), // E-mail
+            street: faker.location.street(), // Rua
+            number: faker.number.int({ min: 1, max: 100 }), // Número da casa
+            neighborhood: faker.location.city(), // Bairro
+            dateOfBirth:faker.date.between({ from: '2000-01-01', to: Date.now() }).toLocaleDateString('pt-BR'), // Data de Nascimento
+            age: faker.number.int({ min: 1, max: 100 }), // Número , // Idade
+            profession: faker.person.jobTitle(), // Profissão
+            previousServices: faker.commerce.productName(), // Serviços Anteriores
+            note: faker.lorem.sentence(), // Observações
+      
+    }
+    return mockData;
+};
+
+const mockClients = generateMockClientData();
+console.log(mockClients);

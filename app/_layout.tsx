@@ -117,11 +117,11 @@ let theme = colorSchema === 'dark' ? customDarkTheme : customLightTheme;
 
         {/* Modal Manager Client */}
         <StackNavigator.Screen
-          name="manager-client"
+          name="manager-list/registerClienteModal"
           component={RegisterClienteModal}
           options={{
             presentation: 'modal', // Define como modal
-            headerShown: false, // Se você não quiser cabeçalho no modal
+            headerShown: true, // Se você não quiser cabeçalho no modal
           }}
         />
       </StackNavigator.Navigator>

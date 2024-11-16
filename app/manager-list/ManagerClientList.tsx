@@ -1,6 +1,25 @@
 import * as React from 'react';
 import { Appbar, Card, DataTable } from 'react-native-paper';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from "react-native";
+import { useEffect } from 'react';
+
+
+type Client = {
+  id: number;
+  name: string;
+  nickname: string;
+  cpf: string;
+  phone: string;
+  email: string;
+  street: string;
+  number: string;
+  neighborhood: string;
+  dateOfBirth: string;
+  age: string;
+  profession: string;
+  previousServices: string;
+  note: string;
+};
 
 const ManageClientList = () => {
   const [page, setPage] = React.useState<number>(0);
@@ -8,36 +27,13 @@ const ManageClientList = () => {
   const [itemsPerPage, onItemsPerPageChange] = React.useState(
     numberOfItemsPerPageList[0]
   );
+  const [loading, setLoading] = React.useState(false); // Es
 
-  const [items] = React.useState([
-    {
-      key: 1,
-      name: 'Cupcakee',
-      calories: 356,
-      fat: 16,
-    },
-    {
-      key: 2,
-      name: 'Eclair',
-      calories: 262,
-      fat: 16,
-    },
-    {
-      key: 3,
-      name: 'Frozen yogurt',
-      calories: 159,
-      fat: 6,
-    },
-    {
-      key: 4,
-      name: 'Gingerbread',
-      calories: 305,
-      fat: 3.7,
-    },
-  ]);
+  const [clients, setclients] = React.useState<Client[]>([]);
 
-  const from = page * itemsPerPage;
-  const to = Math.min((page + 1) * itemsPerPage, items.length);
+  const from = 0; // Define the starting index
+  const to = clients.length; // Define the ending index
+
 
   React.useEffect(() => {
     setPage(0);
@@ -47,9 +43,35 @@ const ManageClientList = () => {
     Alert.alert("Button Pressed!");
   };
 
+  async function getClients() {
+    try {
+      setLoading(true);
+      
+      const response = await fetch('http://localhost:8080/client');
+      const json = await response.json();
+      
+      setclients(json);
+      return json; // Ensure this returns the fetched clients
+    } catch (error) {
+      console.log(error);
+      setclients([]);// Return an empty array in case of an error
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getClients();
+  }, [])
+
+
+
   return (
 
-      <Card style={styles.card}>
+    <Card style={styles.card}>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" /> // Indicador de carregamento
+      ) : (
         <DataTable>
           <DataTable.Header>
             <DataTable.Title>Name</DataTable.Title>
@@ -57,27 +79,28 @@ const ManageClientList = () => {
             <DataTable.Title numeric>Phone</DataTable.Title>
           </DataTable.Header>
 
-          {items.slice(from, to).map((item) => (
-            <DataTable.Row key={item.key} >
-              <DataTable.Cell >{item.name}</DataTable.Cell>
-              <DataTable.Cell numeric>{item.calories}</DataTable.Cell>
-              <DataTable.Cell numeric>{item.fat}</DataTable.Cell>
+          {clients.slice(from, to).map((client) => (
+            <DataTable.Row key={client.id} >
+              <DataTable.Cell >{client.name}</DataTable.Cell>
+              <DataTable.Cell numeric>{client.nickname}</DataTable.Cell>
+              <DataTable.Cell numeric>{client.cpf}</DataTable.Cell>
             </DataTable.Row>
           ))}
 
-          <DataTable.Pagination
-            page={page}
-            numberOfPages={Math.ceil(items.length / itemsPerPage)}
-            onPageChange={(page) => setPage(page)}
-            label={`${from + 1}-${to} of ${items.length}`}
-            numberOfItemsPerPageList={numberOfItemsPerPageList}
-            numberOfItemsPerPage={itemsPerPage}
-            onItemsPerPageChange={onItemsPerPageChange}
-            showFastPaginationControls
-            selectPageDropdownLabel={'Rows per page'}
-          />
+          {/* <DataTable.Pagination
+          page={page}
+          numberOfPages={Math.ceil(items.length / itemsPerPage)}
+          onPageChange={(page) => setPage(page)}
+          label={`${from + 1}-${to} of ${items.length}`}
+          numberOfItemsPerPageList={numberOfItemsPerPageList}
+          numberOfItemsPerPage={itemsPerPage}
+          onItemsPerPageChange={onItemsPerPageChange}
+          showFastPaginationControls
+          selectPageDropdownLabel={'Rows per page'}
+        /> */}
         </DataTable>
-      </Card>
+      )}
+    </Card>
   );
 };
 
@@ -89,12 +112,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0
-    
+
   },
   card: {
     width: '100%',
     height: '100%',
-    borderRadius:0
+    borderRadius: 0
   },
   table: {
     height: '100%',

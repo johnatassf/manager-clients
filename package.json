@@ -19,11 +19,12 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@faker-js/faker": "^9.2.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/elements": "^2.0.0",
     "@react-navigation/native": "^6.1.18",
-    "expo": "~51.0.28",
+    "expo": "^52.0.7",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.9",
     "expo-linking": "~6.3.1",

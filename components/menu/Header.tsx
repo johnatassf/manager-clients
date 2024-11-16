@@ -2,7 +2,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { ParamListBase } from '@react-navigation/native';
 import React from 'react'
 import { StatusBar } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Avatar } from 'react-native-paper';
 
 
 type CustomHeaderProps = {
@@ -25,10 +25,10 @@ export default function CustomHeader({ title, navigation, buttonRegister = undef
                     <Appbar.Action icon="plus" onPress={() => navigation.navigate(buttonRegister)} />
                 )}
 
-                
+
                 <Appbar.Action icon="dots-vertical" onPress={_handleMore} />
 
-
+                <Avatar.Image className='ml-20' size={24} source={require('../../assets/images/react-logo.png')} />
             </Appbar.Header>
         </>
     )
