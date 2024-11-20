@@ -11,7 +11,7 @@ import DrawerScreens from './drawerScreens/_layout';
 import "./../global.css"
 import { configureFonts, MD2LightTheme, MD3DarkTheme, MD3LightTheme, PaperProvider } from 'react-native-paper';
 import Colors from './../assets/theme/Colors.json'
-
+import _layout from './login/_layout';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -19,7 +19,6 @@ SplashScreen.preventAutoHideAsync();
 
 
 const StackNavigator = createNativeStackNavigator();
-
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -98,12 +97,12 @@ export default function RootLayout() {
 
   const colorSchema = useColorScheme();
 
-  const customDarkTheme = { ...MD3DarkTheme, colors: Colors.colorsDark};
+  const customDarkTheme = { ...MD3DarkTheme, colors: Colors.colorsDark };
   const customLightTheme = { ...MD3LightTheme, colors: Colors.colorsLight };
 
- 
-let theme = colorSchema === 'dark' ? customDarkTheme : customLightTheme;
- 
+
+  let theme = colorSchema === 'dark' ? customDarkTheme : customLightTheme;
+
 
   return (
     <PaperProvider theme={theme}>
@@ -113,24 +112,30 @@ let theme = colorSchema === 'dark' ? customDarkTheme : customLightTheme;
         }}
       >
         {/* Drawer Navigator para as telas regulares */}
-        <StackNavigator.Screen name="drawerScreens"  component={DrawerScreens}
-         options={{
-          title:'Clientes'
-         // você não quiser cabeçalho no modal
-        }} />
- 
+        <StackNavigator.Screen
+          name="login"
+          component={_layout}
+
+        />
+        <StackNavigator.Screen name="drawerScreens" component={DrawerScreens}
+          options={{
+            title: 'Clientes'
+            // você não quiser cabeçalho no modal
+          }} />
+
         {/* Modal Manager Client */}
         <StackNavigator.Screen
           name="manager-list/registerClienteModal"
-        
+
           component={RegisterClienteModal}
           options={{
             presentation: 'modal', // Define como modal
             headerShown: true,
-            headerTitle:'Cadastrar Cliente'
-           // você não quiser cabeçalho no modal
+            headerTitle: 'Cadastrar Cliente'
+            // você não quiser cabeçalho no modal
           }}
         />
+
       </StackNavigator.Navigator>
 
     </PaperProvider>

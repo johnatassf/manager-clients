@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native';
 import { ActivityIndicator, Button, Card, Text, useTheme } from 'react-native-paper';
 import { useEffect, useState } from 'react';
-
+import Constants from 'expo-constants';
 
 
 
@@ -32,6 +32,8 @@ type FormValues = {
 
 
 export default function RegisterClienteModal({ route, navigation }) {
+
+    const apiUrl = Constants.expoConfig.extra.apiUrl;
     const { control, handleSubmit, formState: { errors }, setValue, reset } = useForm<FormValues>();
 
     const [loading, setLoading] = useState(false);
@@ -73,7 +75,7 @@ export default function RegisterClienteModal({ route, navigation }) {
     }, [setValue]);
 
     async function getClientById(id: number) {
-        const url = `http://localhost:8080/client/${id}`
+        const url = `${apiUrl}client/${id}`
         setLoading(true);
 
         const response = await fetch(url)
@@ -86,7 +88,7 @@ export default function RegisterClienteModal({ route, navigation }) {
     }
 
     async function newClient(client: any) {
-        const url = 'http://localhost:8080/client'
+        const url = `${apiUrl}client`
         setLoading(true);
         const response = await fetch(url, {
             method: 'POST',
@@ -105,7 +107,7 @@ export default function RegisterClienteModal({ route, navigation }) {
     }
 
     async function updateClient(client: any) {
-        const url = `http://localhost:8080/client/${id}`
+        const url = `${apiUrl}client/${id}`
         setLoading(true);
         const response = await fetch(url, {
             method: 'PUT',
@@ -125,7 +127,7 @@ export default function RegisterClienteModal({ route, navigation }) {
 
 
     async function deleteById(id: number) {
-        const url = `http://localhost:8080/client/${id}`
+      const url = `${apiUrl}client/${id}`
         setLoading(true);
         const response = await fetch(url, {
             method: 'DELETE',

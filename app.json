@@ -2,6 +2,7 @@
   "expo": {
     "name": "manager",
     "slug": "manager",
+    "entryPoint": "./app/index.tsx",
     "version": "1.0.0",
     "homepage": "https://johnatassf.github.io/manager-clients",
     "orientation": "portrait",

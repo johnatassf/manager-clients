@@ -4,7 +4,7 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { useEffect } from 'react';
 import { Colors } from '@/constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
-
+import Constants from 'expo-constants';
 
 
 type Client = {
@@ -33,6 +33,8 @@ const ManageClientList = ({ navigation }) => {
   const [loading, setLoading] = React.useState(false); // Es
   const [clients, setclients] = React.useState<Client[]>([]);
 
+  const {apiUrl}:any = Constants.expoConfig?.extra
+
 
   const from = 0; // Define the starting index
   const to = clients.length; // Define the ending index
@@ -50,7 +52,7 @@ const ManageClientList = ({ navigation }) => {
     try {
       setLoading(true);
 
-      const response = await fetch('http://localhost:8080/client');
+      const response = await fetch(`${apiUrl}client`);
       const json = await response.json();
 
       setclients(json);
